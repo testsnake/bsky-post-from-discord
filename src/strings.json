@@ -1,0 +1,11 @@
+{
+    "command": {
+        "error": {
+            "post": {
+                "failedToCreatePostTitle": {
+                    "en-US": "Failed to create post"
+                }
+            }
+        }
+    }
+}

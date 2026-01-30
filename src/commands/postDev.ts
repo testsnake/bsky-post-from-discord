@@ -6,12 +6,15 @@ import { LocStr } from "../locStr";
 import Utils from "../utils";
 import { locError } from "../locError";
 
+// TODO: Maybe put this in a better place?
+const defaultService = "https://bsky.social";
+
 // TODO: allow this to be edited by the user in the future
 const defaultClientLink = "https://bsky.app";
 
 @Discord()
-export class Post {
-    @Slash({ name: "post", description: "post to your profile" })
+export class PostDev {
+    @Slash({ name: "post-dev", description: "post to your profile without saving your login information" })
     async post(
         @SlashOption({
             name: "text",
@@ -20,6 +23,28 @@ export class Post {
             type: ApplicationCommandOptionType.String,
         })
         text: string,
+        // TODO: Add autocomplete for previously used PDS URLs
+        @SlashOption({
+            name: "service",
+            description: "PDS that hosts the account (usually bsky.social)",
+            required: false,
+            type: ApplicationCommandOptionType.String,
+        })
+        service: string | undefined,
+        @SlashOption({
+            name: "username",
+            description: "Handle or email address of your account",
+            required: false,
+            type: ApplicationCommandOptionType.String,
+        })
+        username: string | undefined,
+        @SlashOption({
+            name: "password",
+            description: "App password of your account (DO NOT USE YOUR ACTUAL PASSWORD)",
+            required: false,
+            type: ApplicationCommandOptionType.String,
+        })
+        password: string | undefined,
         @SlashOption({
             name: "language",
             description: "Two letter language code, uses your clients language by default",
@@ -33,7 +58,10 @@ export class Post {
 
             const userId = interaction.user.id;
             const agent = await credentialManager.getAgent({
-                discordIdentifier: userId
+                discordIdentifier: userId,
+                atprotoService: service || defaultService,
+                atprotoIdentifier: username,
+                atprotoPassword: password,
             });
 
             const lang = (language || interaction.locale.split("-")[0]).split(",");
@@ -44,7 +72,8 @@ export class Post {
             });
 
             await interaction.reply({
-                content: Utils.atUriToBskyUrl(post.uri, defaultClientLink)
+                content: Utils.atUriToBskyUrl(post.uri, defaultClientLink),
+                flags: !!password ? MessageFlags.Ephemeral : undefined,
             });
         } catch (error) {
             console.error(error);

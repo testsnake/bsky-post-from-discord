@@ -3,7 +3,32 @@
         "error": {
             "post": {
                 "failedToCreatePostTitle": {
-                    "en-US": "Failed to create post"
+                    "en-US": "Failed to create post."
+                }
+            },
+            "account": {
+                "failedToAuthenticate": {
+                    "en-US": "Failed to authenticate account."
+                },
+                "credentialsNotProvided": {
+                    "en-US": "Valid credentials not provided."
+                }, 
+                "failedAppPasswordCheck": {
+                    "en-US": "Password is not a valid app password."
+                },
+                "accountSuspended": {
+                    "en-US": "Account has been suspended."
+                },
+                "accountDeactivated": {
+                    "en-US": "Account has been deactivated, use the app to reactivate your account."
+                },
+                "sessionExpired": {
+                    "en-US": "Session has expired, you need to login to your account again"
+                }
+            },
+            "utils": {
+                "unknownAtUriFormat": {
+                    "en-US": "Unknown AT URI format."
                 }
             }
         }
